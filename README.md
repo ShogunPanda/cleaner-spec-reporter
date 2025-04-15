@@ -1,4 +1,4 @@
-# clean-spec-reporter
+# cleaner-spec-reporter
 
 [![Version](https://img.shields.io/npm/v/clean-spec-reporter.svg)](https://npm.im/clean-spec-reporter)
 [![Dependencies](https://img.shields.io/librariesio/release/npm/clean-spec-reporter)](https://libraries.io/npm/clean-spec-reporter)
@@ -12,6 +12,12 @@ http://sw.cowtech.it/clean-spec-reporter
 ## Usage
 
 clean-spec-reporter allows to add coloring to terminal in a really easy way.
+
+Just run your test by specifying it as your test report:
+
+```bash
+node --test --test-reporter=cleaner-spec-reporter ...
+```
 
 ## ESM Only
 
