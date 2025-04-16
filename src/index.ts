@@ -192,7 +192,7 @@ export class TestReporter extends Transform {
         comma = ', '
       }
 
-      if (skipped > 0) {
+      if (cancelled > 0) {
         nonExecuted += `${comma}cancelled: ${cancelled}`
       }
 
@@ -224,7 +224,7 @@ export class TestReporter extends Transform {
       }
     }
 
-    return message + '\n'
+    return message + '\n\n'
   }
 
   #formatError(error: Error): string {
