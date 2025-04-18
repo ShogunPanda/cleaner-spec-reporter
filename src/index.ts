@@ -26,7 +26,50 @@ interface TestReport {
   }
 }
 
+export function indent(nesting: number): string {
+  return ' '.repeat(nesting)
+}
+
+export function pluralize(word: string, count: number): string {
+  return `${word}${count > 1 ? 's' : ''}`
+}
+
+export function duration(start: number): string {
+  let difference = Date.now() - start
+  const message = []
+
+  if (difference > 3600) {
+    const hours = Math.floor(difference / 3600)
+    message.push(`${hours} ${pluralize('hour', hours)}`)
+    difference = difference % 3600
+  }
+
+  if (difference > 60) {
+    const minutes = Math.floor(difference / 60)
+    message.push(`${minutes} ${pluralize('minutes', minutes)}`)
+    difference = difference % 3600
+  }
+
+  message.push(`${difference.toFixed(3)} ${pluralize('second', difference)}`)
+
+  return niceJoin(message)
+}
+
+export function niceJoin(array: string[], lastSeparator: string = ' and ', separator: string = ', '): string {
+  switch (array.length) {
+    case 0:
+      return ''
+    case 1:
+      return array[0]
+    case 2:
+      return array.join(lastSeparator)
+    default:
+      return array.slice(0, -1).join(separator) + lastSeparator + array.at(-1)!
+  }
+}
+
 export class TestReporter extends Transform {
+  #start: number
   #pending: number
   #filesCount: number
   #currentFile: string
@@ -40,6 +83,7 @@ export class TestReporter extends Transform {
     // c8 ignore next
     super({ writableObjectMode: true })
 
+    this.#start = Date.now()
     this.#pending = 0
     this.#filesCount = 0
     this.#currentFile = ''
@@ -91,6 +135,9 @@ export class TestReporter extends Transform {
     /* c8 ignore next 4 */
     let message = ''
 
+    const { blue, green, red, gray, reset, bold } = this.#colors
+    const { rightArrow, fail, pass, diagnostic } = this.#symbols
+
     switch (type) {
       case 'test:stderr':
       case 'test:stdout':
@@ -116,9 +163,9 @@ export class TestReporter extends Transform {
           message = [
             /* c8 ignore next */
             this.#filesCount > 1 ? '\n' : '',
-            this.#colors.gray,
-            this.#symbols.rightArrow,
-            `File ${this.#colors.bold}${relative(process.cwd(), data.file)}\n\n`
+            gray,
+            rightArrow,
+            `File ${bold}${relative(process.cwd(), data.file)}\n\n`
           ].join('')
         }
 
@@ -130,9 +177,7 @@ export class TestReporter extends Transform {
         }
 
         this.#pending--
-        message = `${this.#indent(2)}${this.#colors.green}${this.#symbols.pass}${data.name} ${this.#colors.gray}(${
-          data.details!.duration_ms
-        }ms)\n`
+        message = `${indent(2)}${green}${pass}${data.name} ${gray}(${data.details!.duration_ms}ms)\n`
         break
       case 'test:fail':
         if (data.file?.endsWith(data.name)) {
@@ -142,13 +187,11 @@ export class TestReporter extends Transform {
 
         this.#pending--
         this.#failedTests.push(data)
-        message = `${this.#indent(2)}${this.#colors.red}${this.#symbols.fail}${data.name} ${this.#colors.gray}(${
-          data.details!.duration_ms
-        }ms)${this.#colors.reset}${this.#formatError(data.details!.error!)}`
+        message = `${indent(2)}${red}${fail}${data.name} ${gray}(${data.details!.duration_ms}ms)${reset}${this.#formatError(data.details!.error!)}`
         break
       case 'test:diagnostic':
         if (this.#pending > 0) {
-          message = `${this.#indent(2)}${this.#colors.blue}${this.#symbols.diagnostic}${data.message}\n`
+          message = `${indent(2)}${blue}${diagnostic}${data.message}\n`
         }
         break
       case 'test:summary':
@@ -160,7 +203,7 @@ export class TestReporter extends Transform {
         break
     }
 
-    callback(null, message + this.#colors.reset)
+    callback(null, message + reset)
   }
 
   _flush(callback: Callback<string>): void {
@@ -168,10 +211,12 @@ export class TestReporter extends Transform {
   }
 
   #formatSummary(): string {
+    const { normal, blue, green, red, gray, reset, bold } = this.#colors
+    const { rightArrow, fail } = this.#symbols
+    const count = this.#filesCount
+
     if (this.#filesCount === 0) {
-      return `${this.#colors.blue}${
-        this.#symbols.rightArrow
-      }No tests to run or all test might have been skipped or excluded.`
+      return `${blue}${rightArrow}No tests to run or all test might have been skipped or excluded.\n`
     }
 
     let message = '\n'
@@ -199,28 +244,24 @@ export class TestReporter extends Transform {
       nonExecuted += ')'
     }
 
-    message += `${this.#colors.blue}${this.#symbols.rightArrow}Execution ${this.#colors.bold}`
-    message += this.#failedTests.length === 0 ? `${this.#colors.green}PASSED` : `${this.#colors.red}FAILED`
-    message += this.#colors.reset + this.#colors.blue
-    message += ` with ${passed + todo} ${this.#pluralize('test', passed)} passing out of ${tests}${nonExecuted} over ${this.#filesCount} ${this.#pluralize('file', this.#filesCount)}.`
+    message += `${blue}${rightArrow}Execution ${bold}`
+    message += this.#failedTests.length === 0 ? `${green}PASSED` : `${red}FAILED`
+    message += reset + blue + `after ${duration(this.#start)}ms`
+    message += ` with ${passed + todo} ${pluralize('test', passed)} passing out of ${tests}${nonExecuted} over ${count} ${pluralize('file', count)}.`
 
     if (this.#failedTests.length > 0) {
       const filesWithFailures = new Set()
-      message += `\n\n${this.#colors.red}${this.#symbols.fail}Failed tests:\n\n${this.#colors.reset}`
+      message += `\n\n${red}${fail}Failed tests:\n\n${reset}`
 
       for (const fail of this.#failedTests) {
         const file = relative(process.cwd(), fail.file!)
         filesWithFailures.add(file)
-        message += `${this.#indent(2)}${this.#colors.gray}-${this.#colors.reset} ${this.#colors.bold}${fail.name}${
-          this.#colors.normal
-        } ${this.#colors.gray}(${file}:${fail.line})${this.#colors.reset}\n`
+        message += `${indent(2)}${gray}-${reset} ${bold}${fail.name}${normal} ${gray}(${file}:${fail.line})${reset}\n`
       }
 
-      message += `\n${this.#colors.red}${this.#symbols.fail}Files with failures:\n\n${this.#colors.reset}`
+      message += `\n${red}${fail}Files with failures:\n\n${reset}`
       for (const file of filesWithFailures) {
-        message += `${this.#indent(2)}${this.#colors.gray}-${this.#colors.reset} ${this.#colors.bold}${file}${
-          this.#colors.normal
-        }\n`
+        message += `${indent(2)}${gray}-${reset} ${bold}${file}${normal}\n`
       }
     }
 
@@ -228,7 +269,7 @@ export class TestReporter extends Transform {
   }
 
   #formatError(error: Error): string {
-    const indent = '\n' + this.#indent(6)
+    const indentation = '\n' + indent(6)
 
     if ((error as ErrorWithCode).code === 'ERR_TEST_FAILURE') {
       error = error.cause as Error
@@ -236,18 +277,10 @@ export class TestReporter extends Transform {
 
     return (
       '\n' +
-      indent +
-      inspect(error, { colors: this.#hasColors, customInspect: true, depth: 10 }).split(/\r?\n/).join(indent) +
+      indentation +
+      inspect(error, { colors: this.#hasColors, customInspect: true, depth: 10 }).split(/\r?\n/).join(indentation) +
       '\n\n'
     )
-  }
-
-  #indent(nesting: number): string {
-    return ' '.repeat(nesting)
-  }
-
-  #pluralize(word: string, count: number): string {
-    return `${word}${count > 1 ? 's' : ''}`
   }
 }
 
