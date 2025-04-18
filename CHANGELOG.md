@@ -1,3 +1,7 @@
+### 2025-04-18 / 0.3.1
+
+- fix: Fixed duration formatting.
+
 ### 2025-04-18 / 0.3.0
 
 - feat: Added duration.
