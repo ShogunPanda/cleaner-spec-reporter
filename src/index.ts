@@ -34,23 +34,25 @@ export function pluralize(word: string, count: number): string {
   return `${word}${count > 1 ? 's' : ''}`
 }
 
-export function duration(start: number): string {
-  let difference = Date.now() - start
+export function duration(start: number, now?: number): string {
+  let difference = ((now ?? Date.now()) - start) / 1000
   const message = []
 
-  if (difference > 3600) {
+  if (difference >= 3600) {
     const hours = Math.floor(difference / 3600)
     message.push(`${hours} ${pluralize('hour', hours)}`)
     difference = difference % 3600
   }
 
-  if (difference > 60) {
+  if (difference >= 60) {
     const minutes = Math.floor(difference / 60)
-    message.push(`${minutes} ${pluralize('minutes', minutes)}`)
-    difference = difference % 3600
+    message.push(`${minutes} ${pluralize('minute', minutes)}`)
+    difference = difference % 60
   }
 
-  message.push(`${difference.toFixed(3)} ${pluralize('second', difference)}`)
+  message.push(
+    `${difference.toFixed(Math.round(difference) !== difference ? 3 : 0)} ${pluralize('second', difference)}`
+  )
 
   return niceJoin(message)
 }
@@ -246,7 +248,7 @@ export class TestReporter extends Transform {
 
     message += `${blue}${rightArrow}Execution ${bold}`
     message += this.#failedTests.length === 0 ? `${green}PASSED` : `${red}FAILED`
-    message += reset + blue + `after ${duration(this.#start)}ms`
+    message += reset + blue + ` after ${duration(this.#start)}`
     message += ` with ${passed + todo} ${pluralize('test', passed)} passing out of ${tests}${nonExecuted} over ${count} ${pluralize('file', count)}.`
 
     if (this.#failedTests.length > 0) {

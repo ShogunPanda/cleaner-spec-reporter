@@ -1,107 +1,34 @@
-import assert from 'node:assert'
+import { match, ok, strictEqual } from 'node:assert'
 import { Writable } from 'node:stream'
 import test from 'node:test'
-import { type Callback, type ErrorWithCode, TestReporter } from '../src/index.ts'
+import { type Callback, type ErrorWithCode, TestReporter, duration, niceJoin } from '../src/index.ts'
 
-test('duration function should handle different time units correctly', async () => {
-  // Import the exported functions directly
-  const { duration, pluralize, niceJoin } = await import('../src/index.ts')
-
-  // Test pluralize function directly
-  assert.strictEqual(pluralize('hour', 1), 'hour')
-  assert.strictEqual(pluralize('hour', 2), 'hours')
-
-  // Test the real duration function with specific time values
-  // We need to temporarily override Date.now to return fixed values
-  const originalDateNow = Date.now
-
-  try {
-    // Test with hours, minutes, and seconds
-    const fixedNow = 10000000
-    Date.now = () => fixedNow
-
-    // 2 hours, 30 minutes and 15 seconds ago
-    const hoursAgo = fixedNow - (2 * 3600 * 1000 + 30 * 60 * 1000 + 15 * 1000)
-    const hourResult = duration(hoursAgo)
-    assert.match(hourResult, /hour/)
-
-    // 3 minutes and 15 seconds ago
-    const minutesAgo = fixedNow - (3 * 60 * 1000 + 15 * 1000)
-    const minuteResult = duration(minutesAgo)
-    assert.match(minuteResult, /minute/)
-
-    // 5 seconds ago
-    const secondsAgo = fixedNow - 5 * 1000
-    const secondResult = duration(secondsAgo)
-    assert.match(secondResult, /second/)
-  } finally {
-    Date.now = originalDateNow
-  }
-
-  // Test each branch of the duration function independently
-  // Create a custom test function that mimics the logic in the duration function
-  // but allows us to directly test each branch
-
-  // Helper to test the core duration logic without using Date.now
-  function testDurationLogic(elapsedMs: number): string {
-    let difference = elapsedMs
-    const message: string[] = []
-
-    if (difference > 3600 * 1000) {
-      // This tests lines 41-45
-      const hours = Math.floor(difference / (3600 * 1000))
-      message.push(`${hours} ${pluralize('hour', hours)}`)
-      difference = difference % (3600 * 1000)
-    }
-
-    if (difference > 60 * 1000) {
-      // This tests lines 47-51
-      const minutes = Math.floor(difference / (60 * 1000))
-      message.push(`${minutes} ${pluralize('minutes', minutes)}`)
-      difference = difference % (60 * 1000)
-    }
-
-    // Seconds are always added (line 53)
-    const seconds = difference / 1000
-    message.push(`${seconds.toFixed(3)} ${pluralize('second', seconds)}`)
-
-    return niceJoin(message)
-  }
-
-  // Test with exact values to ensure all branches are covered
-  const hourAndMinuteResult = testDurationLogic(3661 * 1000) // 1 hour, 1 minute, 1 second
-  assert.match(hourAndMinuteResult, /hour/)
-  assert.match(hourAndMinuteResult, /minute/)
-  assert.match(hourAndMinuteResult, /second/)
-
-  const minuteAndSecondResult = testDurationLogic(61 * 1000) // 1 minute, 1 second
-  assert.match(minuteAndSecondResult, /minute/)
-  assert.match(minuteAndSecondResult, /second/)
-
-  const secondOnlyResult = testDurationLogic(1 * 1000) // 1 second
-  assert.match(secondOnlyResult, /second/)
+test('duration function should handle different time units correctly', () => {
+  strictEqual(duration(0, 2 * 3600 * 1000 + 30 * 60 * 1000 + 15 * 1000), '2 hours, 30 minutes and 15 seconds')
+  strictEqual(duration(0, 3 * 60 * 1000 + 15 * 1000), '3 minutes and 15 seconds')
+  strictEqual(duration(0, 5 * 1000), '5 seconds')
+  strictEqual(duration(0, 3661 * 1000), '1 hour, 1 minute and 1 second')
+  strictEqual(duration(0, 61 * 1000), '1 minute and 1 second')
+  match(duration(0, 1.2345678 * 1000), /^1\.23\d seconds$/)
 })
 
-test('niceJoin function should join arrays correctly', async () => {
-  // Import the niceJoin function from index
-  const { niceJoin } = await import('../src/index.ts')
-
+test('niceJoin function should join arrays correctly', () => {
   // Test empty array
-  assert.strictEqual(niceJoin([]), '')
+  strictEqual(niceJoin([]), '')
 
   // Test single item
-  assert.strictEqual(niceJoin(['one']), 'one')
+  strictEqual(niceJoin(['one']), 'one')
 
   // Test two items
-  assert.strictEqual(niceJoin(['one', 'two']), 'one and two')
+  strictEqual(niceJoin(['one', 'two']), 'one and two')
 
   // Test three or more items
-  assert.strictEqual(niceJoin(['one', 'two', 'three']), 'one, two and three')
-  assert.strictEqual(niceJoin(['one', 'two', 'three', 'four']), 'one, two, three and four')
+  strictEqual(niceJoin(['one', 'two', 'three']), 'one, two and three')
+  strictEqual(niceJoin(['one', 'two', 'three', 'four']), 'one, two, three and four')
 
   // Test with custom separators
-  assert.strictEqual(niceJoin(['one', 'two', 'three'], ' or '), 'one, two or three')
-  assert.strictEqual(niceJoin(['one', 'two', 'three'], ' or ', '; '), 'one; two or three')
+  strictEqual(niceJoin(['one', 'two', 'three'], ' or '), 'one, two or three')
+  strictEqual(niceJoin(['one', 'two', 'three'], ' or ', '; '), 'one; two or three')
 })
 
 test('TestReporter should transform test:start events correctly', () => {
@@ -128,7 +55,7 @@ test('TestReporter should transform test:start events correctly', () => {
   })
 
   // Assert
-  assert.match(chunks[0], /File.*test\.ts/)
+  match(chunks[0], /File.*test\.ts/)
 })
 
 test('TestReporter should transform test:pass events correctly', () => {
@@ -157,8 +84,8 @@ test('TestReporter should transform test:pass events correctly', () => {
   })
 
   // Assert
-  assert.match(chunks[0], /✔ should pass/)
-  assert.match(chunks[0], /\(10ms\)/)
+  match(chunks[0], /✔ should pass/)
+  match(chunks[0], /\(10ms\)/)
 })
 
 test('TestReporter should transform test:fail events correctly', () => {
@@ -190,9 +117,9 @@ test('TestReporter should transform test:fail events correctly', () => {
   })
 
   // Assert
-  assert.match(chunks[0], /✖ should fail/)
-  assert.match(chunks[0], /\(10ms\)/)
-  assert.match(chunks[0], /Error: Test error/)
+  match(chunks[0], /✖ should fail/)
+  match(chunks[0], /\(10ms\)/)
+  match(chunks[0], /Error: Test error/)
 })
 
 test('TestReporter should format summary correctly', () => {
@@ -255,8 +182,8 @@ test('TestReporter should format summary correctly', () => {
 
   // Assert
   const fullOutput = chunks.join('')
-  assert.match(fullOutput, /FAILED/)
-  assert.match(fullOutput, /with 2 tests passing out of 3/)
+  match(fullOutput, /FAILED/)
+  match(fullOutput, /with 2 tests passing out of 3/)
 })
 
 test('TestReporter should handle empty test runs correctly', () => {
@@ -276,7 +203,7 @@ test('TestReporter should handle empty test runs correctly', () => {
   reporter.end()
 
   // Assert
-  assert.match(chunks[0], /No tests to run or all test might have been skipped or excluded/)
+  match(chunks[0], /No tests to run or all test might have been skipped or excluded/)
 })
 
 test('TestReporter should handle test:stdout events correctly', () => {
@@ -303,7 +230,7 @@ test('TestReporter should handle test:stdout events correctly', () => {
   })
 
   // Assert
-  assert.match(chunks[0], /Console output/)
+  match(chunks[0], /Console output/)
 })
 
 test('TestReporter should handle test:stderr events correctly', () => {
@@ -330,7 +257,7 @@ test('TestReporter should handle test:stderr events correctly', () => {
   })
 
   // Assert
-  assert.match(chunks[0], /Error output/)
+  match(chunks[0], /Error output/)
 })
 
 test('TestReporter should handle test:diagnostic events correctly', () => {
@@ -367,7 +294,7 @@ test('TestReporter should handle test:diagnostic events correctly', () => {
   })
 
   // Assert
-  assert.match(chunks.join(''), /Diagnostic message/)
+  match(chunks.join(''), /Diagnostic message/)
 })
 
 test('TestReporter should handle test failures with error code correctly', () => {
@@ -404,8 +331,8 @@ test('TestReporter should handle test failures with error code correctly', () =>
   })
 
   // Assert
-  assert.match(chunks[0], /should fail with code/)
-  assert.match(chunks[0], /Actual error cause/)
+  match(chunks[0], /should fail with code/)
+  match(chunks[0], /Actual error cause/)
 })
 
 test('TestReporter should handle summary with skipped, todo, and cancelled tests', () => {
@@ -453,9 +380,9 @@ test('TestReporter should handle summary with skipped, todo, and cancelled tests
 
   // Assert
   const fullOutput = chunks.join('')
-  assert.match(fullOutput, /skipped: 2/)
-  assert.match(fullOutput, /TODO: 1/)
-  assert.match(fullOutput, /cancelled: 1/)
+  match(fullOutput, /skipped: 2/)
+  match(fullOutput, /TODO: 1/)
+  match(fullOutput, /cancelled: 1/)
 })
 
 test('TestReporter should handle test:pass with file that ends with name', () => {
@@ -485,7 +412,7 @@ test('TestReporter should handle test:pass with file that ends with name', () =>
   })
 
   // Assert - should be empty since file ends with name
-  assert.strictEqual(chunks.length, 0)
+  strictEqual(chunks.length, 0)
 })
 
 test('TestReporter should handle test:fail with file that ends with name', () => {
@@ -516,7 +443,7 @@ test('TestReporter should handle test:fail with file that ends with name', () =>
   })
 
   // Assert - should be empty since file ends with name
-  assert.strictEqual(chunks.length, 0)
+  strictEqual(chunks.length, 0)
 })
 
 test('TestReporter should handle test:start with no file', () => {
@@ -542,7 +469,7 @@ test('TestReporter should handle test:start with no file', () => {
   })
 
   // Assert - should be empty since no file
-  assert.strictEqual(chunks.length, 0)
+  strictEqual(chunks.length, 0)
 })
 
 test('TestReporter should display multiple files with failures', () => {
@@ -617,9 +544,9 @@ test('TestReporter should display multiple files with failures', () => {
 
   // Assert - should contain both file paths
   const fullOutput = chunks.join('')
-  assert.match(fullOutput, /test1\.ts/)
-  assert.match(fullOutput, /test2\.ts/)
-  assert.match(fullOutput, /Files with failures/)
+  match(fullOutput, /test1\.ts/)
+  match(fullOutput, /test2\.ts/)
+  match(fullOutput, /Files with failures/)
 })
 
 test('TestReporter should initialize with colors when FORCE_COLOR is set', () => {
@@ -656,7 +583,7 @@ test('TestReporter should initialize with colors when FORCE_COLOR is set', () =>
 
     // Check that the output contains ANSI color codes
     // eslint-disable-next-line no-control-regex
-    assert.match(chunks[0], /\u001b\[/)
+    match(chunks[0], /\u001b\[/)
   } finally {
     // Restore original env
     if (originalEnv === undefined) {
@@ -679,7 +606,7 @@ test('TestReporter should initialize with default constructor values', () => {
   }
 
   const reporter = new TestableReporter()
-  assert.ok(reporter.fieldsInitialized())
+  ok(reporter.fieldsInitialized())
 })
 
 test('TestReporter should handle a complete test cycle with various event types', () => {
@@ -701,7 +628,7 @@ test('TestReporter should handle a complete test cycle with various event types'
 
   // Test message result
   const result = testableReporter.testMessageDefault()
-  assert.strictEqual(result, '')
+  strictEqual(result, '')
 
   // Regular test of the full stream
   const chunks: string[] = []
@@ -743,7 +670,7 @@ test('TestReporter should handle a complete test cycle with various event types'
 
   // Assertion
   const fullOutput = chunks.join('')
-  assert.ok(fullOutput.length > 0, 'Should have some output')
+  ok(fullOutput.length > 0, 'Should have some output')
 })
 
 // Override process.stderr to test the color initialization in constructor
@@ -789,7 +716,7 @@ test('TestReporter should initialize with colors when stderr is TTY', () => {
 
     // Check that the output contains ANSI color codes
     // eslint-disable-next-line no-control-regex
-    assert.match(chunks[0], /\u001b\[/)
+    match(chunks[0], /\u001b\[/)
   } finally {
     // Restore original stderr properties
     Object.defineProperty(process.stderr, 'isTTY', { value: originalIsTTY, configurable: true })
