@@ -1,3 +1,7 @@
+### 2025-04-18 / 0.3.0
+
+- feat: Added duration.
+
 ### 2025-04-16 / 0.2.0
 
 - fix: Fixed summary.
