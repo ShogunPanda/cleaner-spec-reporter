@@ -1,3 +1,7 @@
+### 2025-04-24 / 0.4.0
+
+- feat: Correctly handle diagnostics.
+
 ### 2025-04-18 / 0.3.1
 
 - fix: Fixed duration formatting.
