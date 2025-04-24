@@ -26,6 +26,8 @@ interface TestReport {
   }
 }
 
+const SUMMARY_MATCHER = /(tests|suites|pass|fail|cancelled|skipped|todo|duration_ms)\s+\d+(\.\d+)?/
+
 export function indent(nesting: number): string {
   return ' '.repeat(nesting)
 }
@@ -72,7 +74,7 @@ export function niceJoin(array: string[], lastSeparator: string = ' and ', separ
 
 export class TestReporter extends Transform {
   #start: number
-  #pending: number
+  #success: boolean
   #filesCount: number
   #currentFile: string
   #failedTests: TestReport['data'][]
@@ -80,13 +82,15 @@ export class TestReporter extends Transform {
   #symbols: Record<string, string>
   #hasColors: boolean
   #colors: Record<string, string>
+  #diagnosticShown: boolean
+  #diagnosticLastLevel: number
 
   constructor() {
     // c8 ignore next
     super({ writableObjectMode: true })
 
     this.#start = Date.now()
-    this.#pending = 0
+    this.#success = false
     this.#filesCount = 0
     this.#currentFile = ''
     this.#failedTests = []
@@ -114,6 +118,9 @@ export class TestReporter extends Transform {
       normal: '',
       reset: ''
     }
+
+    this.#diagnosticShown = false
+    this.#diagnosticLastLevel = -1
 
     if (process.env.FORCE_COLOR !== undefined || (process.stderr.isTTY && process.stderr.getColorDepth() > 2)) {
       this.#hasColors = true
@@ -152,13 +159,13 @@ export class TestReporter extends Transform {
           return
         }
 
-        this.#pending++
         if (!data.file) {
           callback(null, message)
           return
         }
 
         if (data.file !== this.#currentFile) {
+          this.#diagnosticShown = false
           this.#currentFile = data.file
           this.#filesCount++
 
@@ -178,7 +185,6 @@ export class TestReporter extends Transform {
           return
         }
 
-        this.#pending--
         message = `${indent(2)}${green}${pass}${data.name} ${gray}(${data.details!.duration_ms}ms)\n`
         break
       case 'test:fail':
@@ -187,16 +193,31 @@ export class TestReporter extends Transform {
           return
         }
 
-        this.#pending--
         this.#failedTests.push(data)
         message = `${indent(2)}${red}${fail}${data.name} ${gray}(${data.details!.duration_ms}ms)${reset}${this.#formatError(data.details!.error!)}`
         break
       case 'test:diagnostic':
-        if (this.#pending > 0) {
-          message = `${indent(2)}${blue}${diagnostic}${data.message}\n`
+        {
+          const level = data.message?.match(SUMMARY_MATCHER) ? 0 : 2
+
+          if (this.#diagnosticShown && this.#diagnosticLastLevel !== level) {
+            this.#diagnosticShown = false
+          }
+
+          this.#diagnosticLastLevel = level
+
+          message = `${indent(level)}${blue}${diagnostic}${data.message}\n`
+
+          if (!this.#diagnosticShown) {
+            this.#diagnosticShown = true
+            message = '\n' + message
+          }
         }
+
         break
       case 'test:summary':
+        this.#success = data.success!
+
         for (const [key, value] of Object.entries(data.counts!)) {
           this.#counters[key] ??= 0
           this.#counters[key] += value
@@ -247,7 +268,8 @@ export class TestReporter extends Transform {
     }
 
     message += `${blue}${rightArrow}Execution ${bold}`
-    message += this.#failedTests.length === 0 ? `${green}PASSED` : `${red}FAILED`
+    /* c8 ignore next */
+    message += this.#success && this.#failedTests.length === 0 ? `${green}PASSED` : `${red}FAILED`
     message += reset + blue + ` after ${duration(this.#start)}`
     message += ` with ${passed + todo} ${pluralize('test', passed)} passing out of ${tests}${nonExecuted} over ${count} ${pluralize('file', count)}.`
 

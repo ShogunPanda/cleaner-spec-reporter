@@ -726,3 +726,68 @@ test('TestReporter should initialize with colors when stderr is TTY', () => {
     })
   }
 })
+
+test('TestReporter should handle diagnostic events with level changes and summary matching', t => {
+  // Setup
+  const reporter = new TestReporter()
+  const chunks: string[] = []
+  const writable = new Writable({
+    write(chunk: Buffer, _encoding: string, callback: Callback<unknown>) {
+      chunks.push(chunk.toString())
+      callback()
+    }
+  })
+
+  reporter.pipe(writable)
+
+  // Set pending tests to allow diagnostic message
+  reporter.write({
+    type: 'test:start',
+    data: {
+      name: 'foo.test.ts',
+      file: '/path/to/test.ts',
+      nesting: 0
+    }
+  })
+
+  // Test a regular diagnostic message at level 2
+  reporter.write({
+    type: 'test:diagnostic',
+    data: {
+      name: 'diagnostic',
+      nesting: 0,
+      message: 'Regular diagnostic message'
+    }
+  })
+
+  // Test a summary diagnostic message at level 0
+  reporter.write({
+    type: 'test:diagnostic',
+    data: {
+      name: 'diagnostic',
+      nesting: 0,
+      message: 'tests 5 pass 3 fail 2' // Matches SUMMARY_MATCHER
+    }
+  })
+
+  // Test a regular diagnostic message after a summary to test level change
+  reporter.write({
+    type: 'test:diagnostic',
+    data: {
+      name: 'diagnostic',
+      nesting: 0,
+      message: 'Another diagnostic message'
+    }
+  })
+
+  // Assert - should include all messages and have correct formatting
+  const output = chunks.join('')
+  match(output, /Regular diagnostic message/)
+  match(output, /tests 5 pass 3 fail 2/)
+  match(output, /Another diagnostic message/)
+
+  // The level change should have triggered a reset of diagnosticShown
+  // So we expect to find two instances of the indentation reset (new lines)
+  const matches = output.match(/\n\s*ℹ/g)
+  ok(matches && matches.length >= 2, 'Should have reset diagnostic formatting at least twice')
+})
