@@ -1,3 +1,7 @@
+### 2025-04-29 / 0.4.1
+
+- fix: Added missing new line.
+
 ### 2025-04-24 / 0.4.0
 
 - feat: Correctly handle diagnostics.
