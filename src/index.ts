@@ -239,7 +239,7 @@ export class TestReporter extends Transform {
     const count = this.#filesCount
 
     if (this.#filesCount === 0) {
-      return `${blue}${rightArrow}No tests to run or all test might have been skipped or excluded.\n`
+      return `\n${blue}${rightArrow}No tests to run or all test might have been skipped or excluded.\n`
     }
 
     let message = '\n'
