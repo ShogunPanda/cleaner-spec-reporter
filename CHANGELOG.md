@@ -1,3 +1,11 @@
+### 2025-05-30 / 0.5.0
+
+- chore: Fixed CI.
+- chore: Fixed CI.
+- chore: Fixed README.
+- chore: Fixed CI.
+- feat: Full rewrite.
+
 ### 2025-04-29 / 0.4.2
 
 - fix: Added missing new line.
