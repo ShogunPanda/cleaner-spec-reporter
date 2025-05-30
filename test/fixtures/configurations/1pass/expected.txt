@@ -1,0 +1,6 @@
+▶ test/fixtures/configurations/1pass/main.test.js
+  
+  ✔ pass (0.271583ms)
+
+▶ Execution PASSED after 0.069 seconds with 1 test passing out of 1 test over 1 file.
+

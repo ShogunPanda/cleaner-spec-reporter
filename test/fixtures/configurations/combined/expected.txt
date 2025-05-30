@@ -1,0 +1,240 @@
+▶ test/fixtures/configurations/combined/first.test.js
+  
+  ✔ todo (0.358917ms) # TODO
+    ℹ todoAA 1
+    ℹ todoAA 2
+    
+  ✖ todoWithMessage (0.067042ms)
+    
+    Error: fail
+        at TestContext.<anonymous> (file:///cleaner-spec-reporter/test/fixtures/configurations/combined/first.test.js:11:9)
+        at Test.runInAsyncScope (node:async_hooks:214:14)
+        at Test.run (node:internal/test_runner/test:1047:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+        at Test.postRun (node:internal/test_runner/test:1173:19)
+        at Test.run (node:internal/test_runner/test:1101:12)
+        at async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+    
+    ℹ todoWithMessage 1
+      This is with a new line
+    ℹ todoWithMessage 2
+    
+  ✔ skip (0.498292ms) # SKIP
+  ✔ pass (0.062084ms)
+  ✖ fail (0.052208ms)
+    
+    Error: fail
+        at TestContext.<anonymous> (file:///cleaner-spec-reporter/test/fixtures/configurations/combined/first.test.js:19:9)
+        at Test.runInAsyncScope (node:async_hooks:214:14)
+        at Test.run (node:internal/test_runner/test:1047:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+        at Test.postRun (node:internal/test_runner/test:1173:19)
+        at Test.run (node:internal/test_runner/test:1101:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+    
+  ▶ subtest
+    
+    ▶ subtest 1
+      
+      ▶ subtest 1.1
+        
+        ✔ subtest 1.1.1 (0.166917ms)
+        ✔ subtest 1.1.2 (0.0455ms)
+        ✖ subtest 1.1.3 (0.088208ms)
+          
+          Error: fail
+              at TestContext.<anonymous> (file:///cleaner-spec-reporter/test/fixtures/configurations/combined/first.test.js:28:15)
+              at Test.runInAsyncScope (node:async_hooks:214:14)
+              at Test.run (node:internal/test_runner/test:1047:25)
+              at Test.start (node:internal/test_runner/test:944:17)
+              at startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+              at run (node:internal/test_runner/harness:307:12)
+              at test (node:internal/test_runner/harness:316:12)
+              at TestContext.<anonymous> (file:///cleaner-spec-reporter/test/fixtures/configurations/combined/first.test.js:27:13)
+              at async Test.run (node:internal/test_runner/test:1054:7)
+              at async TestContext.<anonymous> (file:///cleaner-spec-reporter/test/fixtures/configurations/combined/first.test.js:24:5)
+          
+        ✔ subtest 1.1.1 (0.149459ms)
+        
+      ✖ subtest 1.1 - 1 subtest failed. (0.899667ms)
+      
+    ✖ subtest 1 - 1 subtest failed. (1.003417ms)
+    ✔ subtest 2 (0.035875ms)
+    ✖ subtest 3 (0.032917ms)
+      
+      Error: fail
+          at TestContext.<anonymous> (file:///cleaner-spec-reporter/test/fixtures/configurations/combined/first.test.js:37:11)
+          at Test.runInAsyncScope (node:async_hooks:214:14)
+          at Test.run (node:internal/test_runner/test:1047:25)
+          at Test.start (node:internal/test_runner/test:944:17)
+          at startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+          at run (node:internal/test_runner/harness:307:12)
+          at test (node:internal/test_runner/harness:316:12)
+          at TestContext.<anonymous> (file:///cleaner-spec-reporter/test/fixtures/configurations/combined/first.test.js:36:9)
+          at async Test.run (node:internal/test_runner/test:1054:7)
+          at async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+      
+    ▶ subtest 4
+      
+      ✖ subtest 4.1 - Test timed out after 100ms. (100.792334ms)
+      ✖ subtest 4.2 (0.144375ms)
+        
+        Error: fail
+            at TestContext.<anonymous> (file:///cleaner-spec-reporter/test/fixtures/configurations/combined/first.test.js:50:15)
+            at Test.runInAsyncScope (node:async_hooks:214:14)
+            at Test.run (node:internal/test_runner/test:1047:25)
+            at Test.start (node:internal/test_runner/test:944:17)
+            at startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+            at run (node:internal/test_runner/harness:307:12)
+            at test (node:internal/test_runner/harness:316:12)
+            at TestContext.<anonymous> (file:///cleaner-spec-reporter/test/fixtures/configurations/combined/first.test.js:48:13)
+            at async Test.run (node:internal/test_runner/test:1054:7)
+            at async TestContext.<anonymous> (file:///cleaner-spec-reporter/test/fixtures/configurations/combined/first.test.js:41:5)
+        
+        ℹ subtest 4.2
+      
+    ✖ subtest 4 - 2 subtests failed. (101.159125ms)
+      
+    ▶ subtest 4
+      
+      ✖ subtest 4.1 - Test timed out after 100ms. (101.005291ms)
+      ✖ subtest 4.2 (0.665208ms)
+        
+        Error: fail
+            at TestContext.<anonymous> (file:///cleaner-spec-reporter/test/fixtures/configurations/combined/first.test.js:50:15)
+            at Test.runInAsyncScope (node:async_hooks:214:14)
+            at Test.run (node:internal/test_runner/test:1047:25)
+            at Test.start (node:internal/test_runner/test:944:17)
+            at startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+            at run (node:internal/test_runner/harness:307:12)
+            at test (node:internal/test_runner/harness:316:12)
+            at TestContext.<anonymous> (file:///cleaner-spec-reporter/test/fixtures/configurations/combined/first.test.js:48:13)
+            at async Test.run (node:internal/test_runner/test:1054:7)
+            at async TestContext.<anonymous> (file:///cleaner-spec-reporter/test/fixtures/configurations/combined/first.test.js:41:5)
+        
+        ℹ subtest 4.2
+      
+    ✖ subtest 4 - 2 subtests failed. (102.2365ms)
+      
+    ▶ subtest 4
+      
+      ✖ subtest 4.1 - Test timed out after 100ms. (100.649125ms)
+      ✖ subtest 4.2 (0.305042ms)
+        
+        Error: fail
+            at TestContext.<anonymous> (file:///cleaner-spec-reporter/test/fixtures/configurations/combined/first.test.js:50:15)
+            at Test.runInAsyncScope (node:async_hooks:214:14)
+            at Test.run (node:internal/test_runner/test:1047:25)
+            at Test.start (node:internal/test_runner/test:944:17)
+            at startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+            at run (node:internal/test_runner/harness:307:12)
+            at test (node:internal/test_runner/harness:316:12)
+            at TestContext.<anonymous> (file:///cleaner-spec-reporter/test/fixtures/configurations/combined/first.test.js:48:13)
+            at async Test.run (node:internal/test_runner/test:1054:7)
+            at async TestContext.<anonymous> (file:///cleaner-spec-reporter/test/fixtures/configurations/combined/first.test.js:41:5)
+        
+        ℹ subtest 4.2
+      
+    ✖ subtest 4 - 2 subtests failed. (101.308875ms)
+    
+  ✖ subtest - 5 subtests failed. (306.288542ms)
+    
+  ✖ local timeout - Test timed out after 100ms. (100.656791ms)
+ 
+✖ test/fixtures/configurations/combined/first.test.js - Test timed out after 500ms. (502.270458ms)
+  
+▶ test/fixtures/configurations/combined/second.test.js
+  
+  ✔ pass 1 (0.2885ms)
+  ✖ pass 2 - Error while running after hook. (0.284875ms)
+    
+    Error: wyalla
+        at TestContext.<anonymous> (file:///cleaner-spec-reporter/test/fixtures/configurations/combined/second.test.js:6:11)
+        at TestHook.runInAsyncScope (node:async_hooks:214:14)
+        at TestHook.run (node:internal/test_runner/test:1047:25)
+        at TestHook.run (node:internal/test_runner/test:1354:18)
+        at TestHook.run (node:internal/util:559:20)
+        at Test.runHook (node:internal/test_runner/test:965:20)
+        at after (node:internal/test_runner/test:1005:20)
+        at Test.run (node:internal/test_runner/test:1070:13)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+    
+  ✖ fail (0.035916ms)
+    
+    Error: fail
+        at TestContext.<anonymous> (file:///cleaner-spec-reporter/test/fixtures/configurations/combined/second.test.js:10:9)
+        at Test.runInAsyncScope (node:async_hooks:214:14)
+        at Test.run (node:internal/test_runner/test:1047:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+        at Test.postRun (node:internal/test_runner/test:1173:19)
+        at Test.run (node:internal/test_runner/test:1101:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+    
+  ▶ subtest
+    
+    ▶ subtest 1.1
+      
+      ✔ subtest 1.1.1 (0.1085ms)
+      
+    ✔ subtest 1.1 (0.269333ms)
+    ▶ subtest 1.2
+      
+      ✖ subtest 1.2.1 (0.156084ms)
+        
+        Error: fail
+            at TestContext.<anonymous> (file:///cleaner-spec-reporter/test/fixtures/configurations/combined/second.test.js:20:13)
+            at Test.runInAsyncScope (node:async_hooks:214:14)
+            at Test.run (node:internal/test_runner/test:1047:25)
+            at Test.start (node:internal/test_runner/test:944:17)
+            at startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+            at run (node:internal/test_runner/harness:307:12)
+            at test (node:internal/test_runner/harness:316:12)
+            at TestContext.<anonymous> (file:///cleaner-spec-reporter/test/fixtures/configurations/combined/second.test.js:19:5)
+            at Test.runInAsyncScope (node:async_hooks:214:14)
+            at Test.run (node:internal/test_runner/test:1047:25)
+        
+      
+    ✖ subtest 1.2 - Test cancelled by its parent. (0.242916ms)
+    
+  ✖ subtest - 1 subtest failed. (0.68575ms)
+  ✖ mismatched - Test both accepted a callback but returned a Promise. (0.4415ms)
+
+▶ Execution FAILED after 0.548 seconds with 10 tests (including 2 TODOs) passing out of 34 tests over 2 files (1 test was skipped and 6 tests were cancelled).
+
+✖ Failed tests:
+  
+  ▶ test/fixtures/configurations/combined/first.test.js
+    
+    - todoWithMessage (test/fixtures/configurations/combined/first.test.js:8)
+    - fail (test/fixtures/configurations/combined/first.test.js:18)
+    - subtest ▶ subtest 1 ▶ subtest 1.1 ▶ subtest 1.1.3 (test/fixtures/configurations/combined/first.test.js:27)
+    - subtest ▶ subtest 1 ▶ subtest 1.1 (test/fixtures/configurations/combined/first.test.js:24)
+    - subtest ▶ subtest 1 (test/fixtures/configurations/combined/first.test.js:23)
+    - subtest ▶ subtest 3 (test/fixtures/configurations/combined/first.test.js:36)
+    - subtest ▶ subtest 4 ▶ subtest 4.1 (test/fixtures/configurations/combined/first.test.js:42)
+    - subtest ▶ subtest 4 ▶ subtest 4.2 (test/fixtures/configurations/combined/first.test.js:48)
+    - subtest ▶ subtest 4 (test/fixtures/configurations/combined/first.test.js:41)
+    - subtest ▶ subtest 4 ▶ subtest 4.1 (test/fixtures/configurations/combined/first.test.js:42)
+    - subtest ▶ subtest 4 ▶ subtest 4.2 (test/fixtures/configurations/combined/first.test.js:48)
+    - subtest ▶ subtest 4 (test/fixtures/configurations/combined/first.test.js:41)
+    - subtest ▶ subtest 4 ▶ subtest 4.1 (test/fixtures/configurations/combined/first.test.js:42)
+    - subtest ▶ subtest 4 ▶ subtest 4.2 (test/fixtures/configurations/combined/first.test.js:48)
+    - subtest ▶ subtest 4 (test/fixtures/configurations/combined/first.test.js:41)
+    - subtest (test/fixtures/configurations/combined/first.test.js:22)
+    - local timeout (test/fixtures/configurations/combined/first.test.js:56)
+    
+  ▶ test/fixtures/configurations/combined/second.test.js
+    
+    - pass 2 (test/fixtures/configurations/combined/second.test.js:4)
+    - fail (test/fixtures/configurations/combined/second.test.js:9)
+    - subtest ▶ subtest 1.2 ▶ subtest 1.2.1 (test/fixtures/configurations/combined/second.test.js:19)
+    - subtest ▶ subtest 1.2 (test/fixtures/configurations/combined/second.test.js:18)
+    - subtest (test/fixtures/configurations/combined/second.test.js:13)
+    - mismatched (test/fixtures/configurations/combined/second.test.js:25)
+
+✖ Files with failures:
+  
+  - test/fixtures/configurations/combined/first.test.js
+  - test/fixtures/configurations/combined/second.test.js
+
+

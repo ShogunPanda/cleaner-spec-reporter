@@ -1,0 +1,24 @@
+{"type":"test:enqueue","data":{"nesting":0,"name":"test/fixtures/configurations/all-skipped/main.test.js","type":"test","line":0,"column":0,"file":"/cleaner-spec-reporter/test/fixtures/configurations/all-skipped/main.test.js","duration_ms":1}}
+{"type":"test:dequeue","data":{"nesting":0,"name":"test/fixtures/configurations/all-skipped/main.test.js","type":"test","line":0,"column":0,"file":"/cleaner-spec-reporter/test/fixtures/configurations/all-skipped/main.test.js","duration_ms":1}}
+{"type":"test:enqueue","data":{"nesting":0,"name":"skip 1","type":"test","line":0,"column":0,"file":"/cleaner-spec-reporter/test/fixtures/configurations/all-skipped/main.test.js","duration_ms":1}}
+{"type":"test:dequeue","data":{"nesting":0,"name":"skip 1","type":"test","line":0,"column":0,"file":"/cleaner-spec-reporter/test/fixtures/configurations/all-skipped/main.test.js","duration_ms":1}}
+{"type":"test:enqueue","data":{"nesting":0,"name":"skip 2","type":"test","line":0,"column":0,"file":"/cleaner-spec-reporter/test/fixtures/configurations/all-skipped/main.test.js","duration_ms":1}}
+{"type":"test:complete","data":{"name":"skip 1","nesting":0,"testNumber":1,"details":{"duration_ms":1,"type":"test","passed":true},"line":0,"column":0,"file":"/cleaner-spec-reporter/test/fixtures/configurations/all-skipped/main.test.js","skip":true,"duration_ms":1}}
+{"type":"test:start","data":{"nesting":0,"name":"skip 1","line":0,"column":0,"file":"/cleaner-spec-reporter/test/fixtures/configurations/all-skipped/main.test.js","duration_ms":1}}
+{"type":"test:pass","data":{"name":"skip 1","nesting":0,"testNumber":1,"details":{"duration_ms":1,"type":"test"},"line":0,"column":0,"file":"/cleaner-spec-reporter/test/fixtures/configurations/all-skipped/main.test.js","skip":true,"duration_ms":1}}
+{"type":"test:dequeue","data":{"nesting":0,"name":"skip 2","type":"test","line":0,"column":0,"file":"/cleaner-spec-reporter/test/fixtures/configurations/all-skipped/main.test.js","duration_ms":1}}
+{"type":"test:complete","data":{"name":"skip 2","nesting":0,"testNumber":2,"details":{"duration_ms":1,"type":"test","passed":true},"line":0,"column":0,"file":"/cleaner-spec-reporter/test/fixtures/configurations/all-skipped/main.test.js","skip":true,"duration_ms":1}}
+{"type":"test:start","data":{"nesting":0,"name":"skip 2","line":0,"column":0,"file":"/cleaner-spec-reporter/test/fixtures/configurations/all-skipped/main.test.js","duration_ms":1}}
+{"type":"test:pass","data":{"name":"skip 2","nesting":0,"testNumber":2,"details":{"duration_ms":1,"type":"test"},"line":0,"column":0,"file":"/cleaner-spec-reporter/test/fixtures/configurations/all-skipped/main.test.js","skip":true,"duration_ms":1}}
+{"type":"test:summary","data":{"success":true,"counts":{"tests":2,"failed":0,"passed":0,"cancelled":0,"skipped":2,"todo":0,"topLevel":2,"suites":0},"duration_ms":1,"file":"/cleaner-spec-reporter/test/fixtures/configurations/all-skipped/main.test.js","line":0,"column":0}}
+{"type":"test:complete","data":{"name":"test/fixtures/configurations/all-skipped/main.test.js","nesting":0,"testNumber":1,"details":{"duration_ms":1,"type":"test","passed":true},"line":0,"column":0,"file":"/cleaner-spec-reporter/test/fixtures/configurations/all-skipped/main.test.js","duration_ms":1}}
+{"type":"test:plan","data":{"nesting":0,"count":2,"duration_ms":1,"line":0,"column":0}}
+{"type":"test:diagnostic","data":{"nesting":0,"message":"tests 2","duration_ms":1,"line":0,"column":0}}
+{"type":"test:diagnostic","data":{"nesting":0,"message":"suites 0","duration_ms":1,"line":0,"column":0}}
+{"type":"test:diagnostic","data":{"nesting":0,"message":"pass 0","duration_ms":1,"line":0,"column":0}}
+{"type":"test:diagnostic","data":{"nesting":0,"message":"fail 0","duration_ms":1,"line":0,"column":0}}
+{"type":"test:diagnostic","data":{"nesting":0,"message":"cancelled 0","duration_ms":1,"line":0,"column":0}}
+{"type":"test:diagnostic","data":{"nesting":0,"message":"skipped 2","duration_ms":1,"line":0,"column":0}}
+{"type":"test:diagnostic","data":{"nesting":0,"message":"todo 0","duration_ms":1,"line":0,"column":0}}
+{"type":"test:diagnostic","data":{"nesting":0,"message":"duration_ms 1000","duration_ms":1,"line":0,"column":0}}
+{"type":"test:summary","data":{"success":true,"counts":{"tests":2,"failed":0,"passed":0,"cancelled":0,"skipped":2,"todo":0,"topLevel":2,"suites":0},"duration_ms":1,"line":0,"column":0}}
