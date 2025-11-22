@@ -1,3 +1,4 @@
 dist/
 types/
 coverage/
+test/fixtures/**/*.txt

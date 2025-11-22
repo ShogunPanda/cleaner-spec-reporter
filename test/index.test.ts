@@ -6,6 +6,8 @@ import test from 'node:test'
 import split2 from 'split2'
 import { TestReporter, formatDuration, niceJoin } from '../src/index.ts'
 
+const platform = process.platform === 'win32' ? 'windows' : 'unix'
+
 function parseError(raw: any): Error {
   const { message, cause, stack, ...rest } = raw
 
@@ -22,7 +24,7 @@ function parseError(raw: any): Error {
 
 async function loadExpectedOutput(name: string): Promise<string> {
   const expected = await readFile(
-    resolve(import.meta.dirname, `./fixtures/configurations/${name}/expected.txt`),
+    resolve(import.meta.dirname, `./fixtures/configurations/${name}/expected-${platform}.txt`),
     'utf-8'
   )
 
@@ -45,7 +47,7 @@ async function run(name: string, color: boolean = false): Promise<string> {
   process.env.NO_COLOR = originalNoColor
   process.env.FORCE_COLOR = originalForceColor
 
-  const stream = createReadStream(resolve(import.meta.dirname, `./fixtures/configurations/${name}/raw.txt`))
+  const stream = createReadStream(resolve(import.meta.dirname, `./fixtures/configurations/${name}/raw-${platform}.txt`))
     .pipe(
       split2(function (raw: string) {
         const parsed = JSON.parse(raw)

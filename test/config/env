@@ -1,1 +1,0 @@
-NODE_OPTIONS="--experimental-strip-types --test-reporter=./src/index.ts --disable-warning=ExperimentalWarning"

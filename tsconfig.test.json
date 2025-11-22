@@ -1,4 +1,4 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["src/*.ts", "test/*.ts", "test/fixtures/raw-reporter.ts"]
+  "include": ["src/*.ts", "test/*.ts", "test/fixtures/raw-reporter.ts", "test/fixtures/generate.ts"]
 }

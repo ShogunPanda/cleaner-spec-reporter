@@ -1,7 +1,0 @@
-[0m[0m[0m[0m[0m[0m[90m[1m▶ [22mtest/fixtures/configurations/all-skipped/main.test.js
-[90m│ [0m
-[0m[90m│ [0m[90m✔ skip 1 [90m(0.275375ms)[0m [1m# SKIP[0m
-[0m[0m[0m[0m[90m│ [0m[90m✔ skip 2 [90m(0.045125ms)[0m [1m# SKIP[0m
-[0m[0m[0m[0m[0m[0m[0m[0m[0m[0m[0m[0m[0m
-[34m▶ [1mExecution [1m[32mPASSED[0m[34m after [1m0.069 seconds[22m with [1m0 test[22m passing out of [1m2 tests[22m over [1m1 file[22m ([1m2 tests[22m were skipped).
-
