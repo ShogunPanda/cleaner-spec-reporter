@@ -1,3 +1,7 @@
+### 2025-11-24 / 1.0.0
+
+- feat!: Dropped support for Node 20.
+
 ### 2025-05-30 / 0.5.0
 
 - chore: Fixed CI.
