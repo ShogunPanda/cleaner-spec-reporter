@@ -31,7 +31,6 @@
     "format": "prettier -w src test",
     "lint": "eslint --cache",
     "test": "c8 -c test/config/c8-local.json node --test test/*.test.ts",
-    "test:ci": "c8 -c test/config/c8-ci.json node --test --test-reporter=tap test/*.test.ts",
     "test:fixtures": "./test/fixtures/generate.sh",
     "ci": "npm run build && npm run test",
     "prepublishOnly": "npm run ci",
