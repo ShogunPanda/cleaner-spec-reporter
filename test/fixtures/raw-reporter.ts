@@ -1,5 +1,5 @@
+import type { Callback, TestError, TestReportData } from '../../src/index.ts'
 import { Transform } from 'node:stream'
-import { type Callback, type TestError, type TestReportData } from '../../src/index.ts'
 
 export class TestReporter extends Transform {
   constructor() {
