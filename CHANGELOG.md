@@ -1,3 +1,7 @@
+### 2025-11-27 / 1.0.2
+
+- chore: Sanitized type only imports.
+
 ### 2025-11-27 / 1.0.1
 
 - chore: Sanitized type only imports.
