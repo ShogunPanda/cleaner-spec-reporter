@@ -38,8 +38,8 @@
     "generate": "node test/fixtures/generate.ts"
   },
   "devDependencies": {
-    "@cowtech/eslint-config": "^11.1.2",
-    "@cowtech/typescript-config": "^0.2.4",
+    "@cowtech/eslint-config": "^11.1.3",
+    "@cowtech/typescript-config": "^0.2.5",
     "@types/node": "^24.10.1",
     "c8": "^10.1.3",
     "eslint": "^9.39.1",
