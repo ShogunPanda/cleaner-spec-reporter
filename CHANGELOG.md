@@ -1,3 +1,8 @@
+### 2025-11-27 / 1.0.1
+
+- chore: Sanitized type only imports.
+- chore: Removed leftover script.
+
 ### 2025-11-24 / 1.0.0
 
 - feat!: Dropped support for Node 20.
