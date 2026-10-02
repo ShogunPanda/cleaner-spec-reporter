@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@cowtech/eslint-config": "^12.0.1",
-    "@cowtech/typescript-config": "^1.0.0",
+    "@cowtech/typescript-config": "^1.0.1",
     "@types/node": "^26.6.4",
     "c8": "^12.0.0",
     "eslint": "^10.11.0",
